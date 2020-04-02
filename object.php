@@ -1,16 +1,22 @@
-<?php 
+<?php
 
 class Kelurahan{
-    public $nama,$alamat;
+    public $nama,$alamat,$kelurahan;
     protected $jumlah_keluarga;
     protected $rt;
-    
-    public function Kelurahan(){
-        return "Pondok Labu";
-    }
-}
-class Rt extends Kelurahan{  
+    protected $rw;
 
+    public function __construct($nama,$alamat,$jumlah_keluarga,$rt,$rw,$kelurahan){
+        $this->nama = $nama;
+        $this->alamat = $alamat;
+        $this->jumlah_keluarga = $jumlah_keluarga;
+        $this->rt = $rt;
+        $this->rw=$rw;
+        $this->kelurahan = $kelurahan;
+    }
+    
+}
+class Rt extends Kelurahan{    
     private $penghasilan;
 
     public function setPenghasilan($penghasilan){
@@ -19,58 +25,47 @@ class Rt extends Kelurahan{
     public function getPenghasilan(){
         return $this->penghasilan;
     }
-    public function __construct($nama,$alamat,$jumlah_keluarga,$rt){
-        $this->nama = $nama;
-        $this->alamat = $alamat;
-        $this->jumlah_keluarga = $jumlah_keluarga;
-        $this->rt = $rt;
+    public function mencari(){
+        return "<tr>
+        <Td>$this->nama</Td>
+        <td>$this->alamat</td>
+        <Td>$this->jumlah_keluarga</Td>
+        <td>$this->rt</td>
+        <td>$this->rw</td>
+        <td>$this->kelurahan</td>
+        <td>".$this->getPenghasilan()."</td>
+        </tr>
+        ";
     }
-    
-
-    public function keluarga(){
-        return "
-        <tr>
-            <td>$this->nama</td>
-            <td>$this->alamat</td>
-            <td>$this->jumlah_keluarga</td>
-            <td>".$this->getpenghasilan()."</td>
-            <td>".$this->Kelurahan()."</td>
-        </tr>";
-    } 
 }
-class Rw extends kelurahan{
-    protected $rw;
+class Rw extends Rt{
+ 
+    public function rukunwarga(){
 
-    public function __construct($nama,$alamat,$rt,$jumlah_keluarga){
-        $this->nama = $nama;
-        $this->alamat = $alamat;
-        $this->rt = $rt;
-        $this->jumlah_keluarga = $jumlah_keluarga;
+        return "<tr>
+        <Td>$this->nama</Td>
+        <td>$this->alamat</td>
+        <Td>$this->jumlah_keluarga</Td>
+        <td>$this->rt</td>
+        <td>$this->rw</td>
+        <td>$this->kelurahan</td>
+        <td>".$this->getPenghasilan()."</td>
+        </tr>
+        ";
     }
-    public function warga(){
-        return "
-        <tr>
-            <td>$this->nama</td>
-            <td>$this->alamat</td>
-            <td>$this->rt</td>
-            <td>$this->jumlah_keluarga</td>
-            <td>".$this->Kelurahan()."</td>
-            </tr>";
-    } 
 }
-$warga1 = new Rt("imam","gang asem",10,"");
-$warga2 = new Rt("Dedy","Merak",20,"");
-$warga3 = new Rt("Ryan","Srengseng",4,"");
-$warga4 = new Rt("Habib","Merauke",50,"");
-$hasil = $warga1->setPenghasilan("20 juta").$warga2->setPenghasilan("10 juta").$warga3->setPenghasilan("20 juta").$warga4->setPenghasilan("10 juta").$warga1->keluarga().$warga2->keluarga().$warga3->keluarga().$warga4->keluarga();
 
-$rw1 = new Rw("Imam","Gang Asem","10 Orang","003");
-$rw2 = new Rw("Dedy","Merak","3 Orang","004");
-$rw3 = new Rw("Ryan","Srengseng","8 Orang","010");
-$rw4 = new Rw("Habib","GLC","30 Orang","003");
+$lurah1 = new Rt("imam","Gang Asem",2,"RT.003","rw.007","Batu Ceper");
+$lurah2 = new Rt("Dedy","Merak Banten",5,"RT.006","rw.007","Batu Ceper");
+$lurah3 = new Rt("Habib","GreenLake",10,"RT.002","rw.007","Batu Ceper");
+$lurah4 = new Rt("Ryan","Srengseng",3,"RT.009","rw.007","Batu Ceper");
+$tampung = $lurah1->setPenghasilan("20 juta").$lurah1->mencari().$lurah2->setPenghasilan("30 juta").$lurah2->mencari().$lurah3->setPenghasilan("20 juta").$lurah3->mencari().$lurah4->setPenghasilan("19 juta").$lurah4->mencari();
 
-$hasilRw = $rw1->warga().$rw2->warga().$rw3->warga().$rw4->warga();
-
+$rw1 = new Rw("rahmat","Gang Asem",4,"RT.019","Rw.007","Batu Ceper");
+$rw2 = new Rw("Hidayat","Gang Senggol",3,"RT.020","Rw.010","Batu Ceper");
+$rw3 = new Rw("Eko","Jalan Panjang",5,"RT.012","Rw.012","Batu Ceper");
+$rw4 = new Rw("Rondo","Jalan Sempit",6,"RT.019","Rw.010","Batu Ceper");
+$hasil = $rw1->setPenghasilan("15 juta").$rw1->rukunwarga().$rw2->setPenghasilan("5 juta").$rw2->rukunwarga().$rw3->setPenghasilan("15 juta").$rw3->rukunwarga().$rw4->setPenghasilan("15 juta").$rw4->rukunwarga();
 
 ?>
 <!DOCTYPE html>
@@ -88,7 +83,7 @@ $hasilRw = $rw1->warga().$rw2->warga().$rw3->warga().$rw4->warga();
     <div class="container">
         <div class="row">
             <div class="col-md-12 mt-5 mb-3">
-                <h1 class="text-center">Data Warga RT 003</h1>
+                <h1 class="text-center">Data Warga RT Kelurahan Batu ceper</h1>
             </div>
         </div>
         <div class="row">
@@ -99,12 +94,14 @@ $hasilRw = $rw1->warga().$rw2->warga().$rw3->warga().$rw4->warga();
                             <th scope="col">Nama</th>
                             <th scope="col">Alamat</th>
                             <th scope="col">Jumlah Keluarga</th>
-                            <th scope="col">Penghasilan</th>
+                            <th scope="col">Rt</th>
+                            <th scope="col">Rw</th>
                             <th scope="col">Kelurahan</th>
+                            <th scope="col">Penghasilan</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?= $hasil ?>
+                        <?= $tampung ?>
                     </tbody>
                 </table>
             </div>
@@ -113,7 +110,7 @@ $hasilRw = $rw1->warga().$rw2->warga().$rw3->warga().$rw4->warga();
         <br><br>
         <div class="row">
             <div class="col-md-12">
-            <h1 class="mt-5 text-center">Data RW 008</h1>
+            <h1 class="mt-5 text-center">Data RW Kelurahan Batu ceper</h1>
             </div>
         </div>
         <div class="row mt-5">
@@ -125,11 +122,13 @@ $hasilRw = $rw1->warga().$rw2->warga().$rw3->warga().$rw4->warga();
                             <th scope="col">Alamat</th>
                             <th scope="col">Jumlah Keluarga</th>
                             <th scope="col">Rt</th>
+                            <th scope="col">Rw</th>
                             <th scope="col">Kelurahan</th>
+                            <th scope="col">Penghasilan</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?= $hasilRw ?>
+                        <?= $hasil ?>
                     </tbody>
                 </table>
             </div>
